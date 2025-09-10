@@ -1,0 +1,143 @@
+/* Background container for center alignment */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(); /* Subtle gradient background */
+}
+
+/* Card container for the login/signup box */
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 40px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.98); /* Slightly more opaque */
+  backdrop-filter: blur(12px); /* Increased blur for a frosted glass effect */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
+    /* Enhanced shadow */ 0 4px 6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 440px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loginBox:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
+    /* More pronounced shadow on hover */ 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Title styling */
+.title {
+  font-weight: 700; /* Slightly bolder */
+  margin-bottom: 36px;
+  color: #1e293b; /* Darker color for better contrast */
+  font-size: 32px;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* Form styling */
+.form {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* TextField styling for all inputs */
+.textField {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.textField .MuiOutlinedInput-root {
+  border-radius: 12px;
+  font-size: 16px;
+  padding: 16px;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.textField .MuiOutlinedInput-root:hover {
+  background-color: #f1f5f9;
+}
+
+.textField .MuiOutlinedInput-root.Mui-focused {
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.textField .MuiFormLabel-root {
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.textField .MuiOutlinedInput-root.Mui-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.textField .MuiFormHelperText-root {
+  font-size: 14px;
+  color: #ef4444;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* Submit Button Styling */
+.button {
+  padding: 16px;
+  font-size: 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  margin-top: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); /* Enhanced shadow on hover */
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); /* Slightly reduced shadow on click */
+}
+
+/* Helper text styling */
+.helperText {
+  font-size: 14px;
+  color: #64748b;
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+/* Link styling for "Forgot Password" or "Sign Up" */
+.link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
