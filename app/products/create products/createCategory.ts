@@ -6,8 +6,11 @@ import { cookies } from "next/headers";
 interface CreateCategoryPayload {
   name: string;
 }
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export const createCategory = async (payload: CreateCategoryPayload) => {
+  const url = `${API_URL}/categories`; // ✅ full endpoint
+
   try {
     // Get the access token from cookies
     const cookieStore = cookies();
@@ -21,7 +24,7 @@ export const createCategory = async (payload: CreateCategoryPayload) => {
 
     // Send request to backend
     const result = await axios.post(
-      "http://localhost:3001/categories", // Your backend endpoint
+      url, // Your backend endpoint
       payload,
       {
         headers: {

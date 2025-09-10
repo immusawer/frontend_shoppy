@@ -9,8 +9,11 @@ interface ProductFormValues {
   imageFile: string; // This is a base64 string
   categoryId: number;
 }
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export const createProduct = async (formData: ProductFormValues) => {
+  const url = `${API_URL}/products`; // ✅ full endpoint
+
   try {
     // Get the access token from server-side cookies
     const cookieStore = await cookies();
@@ -30,24 +33,20 @@ export const createProduct = async (formData: ProductFormValues) => {
     formDataToSend.append("categoryId", formData.categoryId.toString());
 
     // Convert base64 to blob
-    const base64Data = formData.imageFile.split(',')[1];
-    const binaryData = Buffer.from(base64Data, 'base64');
-    const blob = new Blob([binaryData], { type: 'image/png' });
+    const base64Data = formData.imageFile.split(",")[1];
+    const binaryData = Buffer.from(base64Data, "base64");
+    const blob = new Blob([binaryData], { type: "image/png" });
     formDataToSend.append("image", blob, "product-image.png");
 
     console.log("Sending request with token in header"); // Debug log
 
     // Send the request to the backend with the JWT token in the headers
-    const result = await axios.post(
-      "http://localhost:3001/products",
-      formDataToSend,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const result = await axios.post(url, formDataToSend, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return result.data;
   } catch (error) {
