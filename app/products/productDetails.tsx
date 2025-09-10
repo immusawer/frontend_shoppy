@@ -17,7 +17,11 @@ interface ProductDetailsProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export default function ProductDetails({ product, open, onOpenChange }: ProductDetailsProps) {
+export default function ProductDetails({
+  product,
+  open,
+  onOpenChange,
+}: ProductDetailsProps) {
   const imageUrl = getImageUrl(product);
 
   return (
@@ -26,7 +30,7 @@ export default function ProductDetails({ product, open, onOpenChange }: ProductD
         <DialogHeader>
           <DialogTitle>Product Details</DialogTitle>
         </DialogHeader>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>{product.name}</CardTitle>
@@ -40,15 +44,19 @@ export default function ProductDetails({ product, open, onOpenChange }: ProductD
                     src={imageUrl}
                     alt={product.name}
                     className="w-full h-full object-cover rounded-lg"
-                    onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                      console.error(`Failed to load image: ${imageUrl}`);
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.jpg';
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      if (!img.src.includes("via.placeholder.com")) {
+                        img.src =
+                          "https://via.placeholder.com/400x400?text=No+Image";
+                      }
                     }}
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-muted rounded-lg">
-                    <span className="text-sm text-muted-foreground">No image available</span>
+                    <span className="text-sm text-muted-foreground">
+                      No image available
+                    </span>
                   </div>
                 )}
               </div>
@@ -59,7 +67,9 @@ export default function ProductDetails({ product, open, onOpenChange }: ProductD
                   ${product.price.toFixed(2)}
                 </h3>
                 <div className="flex items-center justify-center space-x-2 text-muted-foreground">
-                  <span className="text-sm">Category: {product.category?.name || "Uncategorized"}</span>
+                  <span className="text-sm">
+                    Category: {product.category?.name || "Uncategorized"}
+                  </span>
                 </div>
               </div>
 
@@ -73,7 +83,9 @@ export default function ProductDetails({ product, open, onOpenChange }: ProductD
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-muted-foreground">Additional Information</Label>
+                  <Label className="text-muted-foreground">
+                    Additional Information
+                  </Label>
                   <p className="text-sm text-muted-foreground">
                     Product ID: {product.id}
                   </p>
@@ -82,17 +94,14 @@ export default function ProductDetails({ product, open, onOpenChange }: ProductD
 
               {/* Action Buttons */}
               <div className="flex space-x-4 w-full">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="flex-1"
                   onClick={() => onOpenChange(false)}
                 >
                   Close
                 </Button>
-                <Button 
-                  variant="default" 
-                  className="flex-1"
-                >
+                <Button variant="default" className="flex-1">
                   Add to Cart
                 </Button>
               </div>
@@ -102,4 +111,4 @@ export default function ProductDetails({ product, open, onOpenChange }: ProductD
       </DialogContent>
     </Dialog>
   );
-} 
+}

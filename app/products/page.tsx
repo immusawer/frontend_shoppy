@@ -29,6 +29,7 @@ interface Category {
   id: number;
   name: string;
 }
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,15 +40,18 @@ export default function ProductsPage() {
   const [error, setError] = useState<string | null>(null);
 
   const fetchProducts = async () => {
+    const productsUrl = `${API_BASE_URL}/products/all`;
+
     try {
-      const data = await getproducts("http://localhost:3001/products/all");
+      const data = await getproducts(productsUrl);
       setProducts(data);
       setFilteredProducts(data);
     } catch (error: any) {
       console.error("Error fetching products:", error);
-      const errorMessage = error.code === 'ECONNREFUSED' 
-        ? "Cannot connect to the server. Please ensure the backend server is running."
-        : "Failed to load products";
+      const errorMessage =
+        error.code === "ECONNREFUSED"
+          ? "Cannot connect to the server. Please ensure the backend server is running."
+          : "Failed to load products";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -72,8 +76,8 @@ export default function ProductsPage() {
     if (selectedCategory === "all") {
       setFilteredProducts(products);
     } else {
-      const filtered = products.filter((product) => 
-        product.category?.id?.toString() === selectedCategory
+      const filtered = products.filter(
+        (product) => product.category?.id?.toString() === selectedCategory
       );
       setFilteredProducts(filtered);
     }
@@ -102,13 +106,15 @@ export default function ProductsPage() {
   return (
     <Container>
       <Box sx={{ my: 4 }}>
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          mb: 6,
-          position: 'relative'
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 6,
+            position: "relative",
+          }}
+        >
           <div className="flex items-center gap-2">
             <Filter className="h-5 w-5 text-primary" />
             <Select
@@ -140,4 +146,4 @@ export default function ProductsPage() {
       </Box>
     </Container>
   );
-} 
+}

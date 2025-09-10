@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 import axios from "axios";
 import Cookies from "js-cookie";
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL = process.env.NEXT_PUBLIC_API_URL! || "http://localhost:3001";
 
 // Helper function to get token
 async function getToken() {
@@ -25,12 +25,13 @@ async function getToken() {
 
 // POST method implementation
 export default async function post(path: string, formData: FormData) {
+  const url = `${API_URL}/${path}`;
   try {
     const token = await getToken();
     const jsonData = Object.fromEntries(formData);
     console.log("Sending request to:", `${API_URL}/${path}`);
 
-    const res = await fetch(`${API_URL}/${path}`, {
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,10 +43,12 @@ export default async function post(path: string, formData: FormData) {
 
     console.log("Response status:", res.status);
     const parsedRes = await res.json();
-    
+
     if (!res.ok) {
       console.error("Error response:", parsedRes);
-      throw new Error(parsedRes.message || `Failed to post data: ${res.statusText}`);
+      throw new Error(
+        parsedRes.message || `Failed to post data: ${res.statusText}`
+      );
     }
 
     return parsedRes;
@@ -57,10 +60,11 @@ export default async function post(path: string, formData: FormData) {
 
 // GET products implementation
 export async function getproducts(path: string) {
+  const url = `${API_URL}/products/all`;
   try {
     console.log("Fetching products from:", path);
 
-    const response = await axios.get(path, {
+    const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -71,8 +75,10 @@ export async function getproducts(path: string) {
     return response.data;
   } catch (error: any) {
     console.error("Error fetching products:", error);
-    if (error.code === 'ECONNREFUSED') {
-      console.error("Connection refused. Make sure your backend server is running on the correct port.");
+    if (error.code === "ECONNREFUSED") {
+      console.error(
+        "Connection refused. Make sure your backend server is running on the correct port."
+      );
     }
     throw error;
   }
@@ -80,9 +86,10 @@ export async function getproducts(path: string) {
 
 // GET categories implementation
 export async function getCategories() {
+  const url = `${API_URL}/categories`;
+
   try {
     const token = await getToken();
-    const url = `${API_URL}/categories`;
     console.log("Fetching categories from:", url);
 
     const res = await fetch(url, {
@@ -95,11 +102,15 @@ export async function getCategories() {
     });
 
     console.log("Response status:", res.status);
-    
+
     if (!res.ok) {
-      const errorData = await res.json().catch(() => ({ message: res.statusText }));
+      const errorData = await res
+        .json()
+        .catch(() => ({ message: res.statusText }));
       console.error("Error response:", errorData);
-      throw new Error(errorData.message || `Failed to fetch categories: ${res.statusText}`);
+      throw new Error(
+        errorData.message || `Failed to fetch categories: ${res.statusText}`
+      );
     }
 
     const data = await res.json();
