@@ -5,12 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
@@ -25,7 +20,7 @@ type ResetFormValues = z.infer<typeof loginSchema>;
 export default function ResetPage() {
   const router = useRouter();
   const [networkError, setNetworkError] = useState<string | null>(null);
-  
+
   const {
     register,
     handleSubmit,
@@ -37,25 +32,23 @@ export default function ResetPage() {
 
   const onSubmit = async (data: ResetFormValues) => {
     setNetworkError(null);
-    console.log('Form submitted with data:', data);
     try {
       const result = await requestPasswordReset(data.email.toLowerCase());
-      console.log('Reset password result:', result);
-      
+      console.log("Reset password result:", result);
+
       if (result.success) {
         toast.success(result.message, {
-          description: 'Please check your email for reset instructions',
+          description: "Please check your email for reset instructions",
           duration: 3000,
         });
-        
+
         setTimeout(() => {
-          router.push('/login');
+          router.push("/login");
         }, 2000);
       } else {
         setNetworkError(result.message || "Failed to request password reset");
       }
     } catch (error: any) {
-      console.error('Submission error:', error);
       setNetworkError(error.message || "Failed to connect to server");
     }
   };
@@ -95,11 +88,7 @@ export default function ResetPage() {
               <p className="text-destructive text-sm">{networkError}</p>
             )}
 
-            <Button
-              type="submit"
-              className="w-full h-11 text-base font-medium"
-
-            >
+            <Button type="submit" className="w-full h-11 text-base font-medium">
               {isSubmitting ? "Resetting..." : "Send Reset Link"}
             </Button>
             <div className="text-center mb-0">

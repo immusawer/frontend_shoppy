@@ -23,8 +23,6 @@ export const createProduct = async (formData: ProductFormValues) => {
       throw new Error("JWT token not found in cookies.");
     }
 
-    console.log("Token found:", token.substring(0, 10) + "..."); // Debug log
-
     // Create a FormData object
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
@@ -38,8 +36,6 @@ export const createProduct = async (formData: ProductFormValues) => {
     const blob = new Blob([binaryData], { type: "image/png" });
     formDataToSend.append("image", blob, "product-image.png");
 
-    console.log("Sending request with token in header"); // Debug log
-
     // Send the request to the backend with the JWT token in the headers
     const result = await axios.post(url, formDataToSend, {
       headers: {
@@ -50,7 +46,6 @@ export const createProduct = async (formData: ProductFormValues) => {
 
     return result.data;
   } catch (error) {
-    console.error("Error creating product:", error);
     throw error;
   }
 };

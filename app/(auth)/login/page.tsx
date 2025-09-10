@@ -23,7 +23,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const router = useRouter();
   const [networkError, setNetworkError] = useState<string | null>(null);
-  
+
   const {
     register,
     handleSubmit,
@@ -35,18 +35,16 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setNetworkError(null);
-    console.log('Form submitted with data:', data);
-    
     try {
       const result = await loginUser(data);
-      console.log('Login result:', result);
-      
+      console.log("Login result:", result);
+
       if (result.success && result.access_token) {
-        toast.success('Login successful!', {
-          description: 'Welcome back! Redirecting to home...',
+        toast.success("Login successful!", {
+          description: "Welcome back! Redirecting to home...",
           duration: 2000,
         });
-        
+
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
@@ -57,7 +55,6 @@ export default function LoginPage() {
         });
       }
     } catch (error: any) {
-      console.error('Submission error:', error);
       setError("root", {
         type: "manual",
         message: error.response?.data?.message || "Failed to connect to server",
@@ -69,7 +66,9 @@ export default function LoginPage() {
     <>
       <Card className="w-[350px] mx-auto mt-20">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-foreground">Login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-foreground">
+            Login
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -83,10 +82,12 @@ export default function LoginPage() {
                 disabled={isSubmitting}
               />
               {errors.email && (
-                <p className="text-destructive text-sm">{errors.email.message}</p>
+                <p className="text-destructive text-sm">
+                  {errors.email.message}
+                </p>
               )}
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -97,28 +98,28 @@ export default function LoginPage() {
                 disabled={isSubmitting}
               />
               {errors.password && (
-                <p className="text-destructive text-sm">{errors.password.message}</p>
+                <p className="text-destructive text-sm">
+                  {errors.password.message}
+                </p>
               )}
             </div>
-            
+
             {errors.root && (
               <p className="text-destructive text-sm">{errors.root.message}</p>
             )}
-            
+
             {networkError && (
               <p className="text-destructive text-sm">{networkError}</p>
             )}
-            
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isSubmitting}
-            >
+
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
 
             <div className="text-center mb-0">
-              <p className="text-sm text-muted-foreground">Don't have an account?</p>
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?
+              </p>
               <Button
                 type="button"
                 variant="link"

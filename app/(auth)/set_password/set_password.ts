@@ -24,15 +24,12 @@ export const resetPasswordSchema = z
 export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
 // API service to reset password using axios
-export const resetPassword = async (data: ResetPasswordFormValues): Promise<{ success: boolean; message: string }> => {
+export const resetPassword = async (
+  data: ResetPasswordFormValues
+): Promise<{ success: boolean; message: string }> => {
   try {
     // Update to use port 3001 instead of 3000
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-    
-    // Ensure we're using the correct endpoint that matches the backend controller
-    console.log(`Sending password reset request to: ${apiUrl}/password-reset/reset`);
-    console.log("Reset password data:", data);
-    
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
     const response = await axios.post(`${apiUrl}/password-reset/reset`, {
       token: data.token,
       password: data.password,
@@ -45,7 +42,7 @@ export const resetPassword = async (data: ResetPasswordFormValues): Promise<{ su
     };
   } catch (error) {
     console.error("Error resetting password:", error);
-    
+
     // Handle axios error responses
     if (axios.isAxiosError(error) && error.response) {
       return {
@@ -53,7 +50,7 @@ export const resetPassword = async (data: ResetPasswordFormValues): Promise<{ su
         message: error.response.data.message || "Failed to reset password",
       };
     }
-    
+
     return {
       success: false,
       message: "An error occurred while resetting your password",
@@ -68,4 +65,4 @@ export const getTokenFromUrl = (): string | null => {
     return urlParams.get("token");
   }
   return null;
-}; 
+};

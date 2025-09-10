@@ -37,11 +37,6 @@ export async function fetchUserProfile(): Promise<UserProfile> {
     if (!token) {
       throw new Error("No authentication token found");
     }
-
-    console.log("=== Profile Service Debug ===");
-    console.log("API URL:", `${API_BASE_URL}/users/profile`);
-    console.log("Token (first 10 chars):", token.substring(0, 10) + "...");
-
     const response = await axios.get(profileImage, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,15 +82,12 @@ export async function updateUserProfile(
       withCredentials: true,
     });
 
-    console.log("API Response:", response.data);
-
     if (!response.data) {
       throw new Error("No data received from server");
     }
 
     return response.data;
   } catch (error: any) {
-    console.error("API Error:", error);
     if (error.response?.status === 401) {
       throw new Error("Authentication failed. Please login again.");
     }

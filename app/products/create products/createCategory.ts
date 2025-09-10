@@ -20,7 +20,6 @@ export const createCategory = async (payload: CreateCategoryPayload) => {
       throw new Error("JWT token not found in cookies.");
     }
 
-    console.log("Token found:", token.substring(0, 10) + "..."); // Debug log
 
     // Send request to backend
     const result = await axios.post(
@@ -36,7 +35,6 @@ export const createCategory = async (payload: CreateCategoryPayload) => {
 
     return result.data; // Return the newly created category
   } catch (error) {
-    console.error("Error creating category:", error);
     throw error;
   }
 };

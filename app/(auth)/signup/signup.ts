@@ -13,10 +13,6 @@ export const signup = async (formData: FormData): Promise<SignupResponse> => {
   try {
     const rawEmail = formData.get("email")?.toString() || "";
     formData.set("email", rawEmail.toLowerCase()); // ✅ normalize before sending
-    console.log(
-      "Attempting to register user with email:",
-      formData.get("rawEmail")
-    );
     const response = await axios.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -24,15 +20,11 @@ export const signup = async (formData: FormData): Promise<SignupResponse> => {
       },
       withCredentials: true,
     });
-    console.log("Registration response:", response.data);
-
     return {
       success: true,
       message: "Registration successful",
     };
   } catch (error: any) {
-    console.error("Signup error:", error);
-
     // Handle connection refused error
     if (error.code === "ECONNREFUSED") {
       return {

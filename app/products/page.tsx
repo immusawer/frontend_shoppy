@@ -47,7 +47,6 @@ export default function ProductsPage() {
       setProducts(data);
       setFilteredProducts(data);
     } catch (error: any) {
-      console.error("Error fetching products:", error);
       const errorMessage =
         error.code === "ECONNREFUSED"
           ? "Cannot connect to the server. Please ensure the backend server is running."
@@ -63,7 +62,6 @@ export default function ProductsPage() {
       const data = await getCategories();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
     }
   };
 

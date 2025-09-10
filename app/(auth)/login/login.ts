@@ -23,8 +23,6 @@ export const loginUser = async (credentials: {
     };
 
     const response = await axios.post(url, normalizedCredentials);
-    console.log("Server response:", response.data);
-
     if (response.data.access_token) {
       localStorage.setItem("access_token", response.data.access_token);
       Cookies.set("access_token", response.data.access_token, {
@@ -50,7 +48,6 @@ export const loginUser = async (credentials: {
       message: response.data.message || "Login failed",
     };
   } catch (error: any) {
-    console.error("Login error:", error.response?.data);
     return {
       success: false,
       message: error.response?.data?.message || "Login failed",

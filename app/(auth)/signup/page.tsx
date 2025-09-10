@@ -72,7 +72,6 @@ export default function SignupPage() {
         });
       }
     } catch (error: any) {
-      console.error('Submission error:', error);
       setError("root", {
         type: "manual",
         message: error.response?.data?.message || "Failed to connect to server",

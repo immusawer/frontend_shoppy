@@ -9,7 +9,6 @@ export default async function getProduct() {
     // Use the correct endpoint for getting all products
     return await getproducts(url);
   } catch (error) {
-    console.error("Error fetching products:", error);
     throw error;
   }
 }
