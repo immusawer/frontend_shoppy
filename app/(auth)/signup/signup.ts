@@ -9,6 +9,7 @@ interface SignupResponse {
 }
 
 export const signup = async (formData: FormData): Promise<SignupResponse> => {
+  const url = `${API_URL}/users/register`;
   try {
     const rawEmail = formData.get("email")?.toString() || "";
     formData.set("email", rawEmail.toLowerCase()); // ✅ normalize before sending
@@ -16,7 +17,7 @@ export const signup = async (formData: FormData): Promise<SignupResponse> => {
       "Attempting to register user with email:",
       formData.get("rawEmail")
     );
-    const response = await axios.post(`${API_URL}/users/register`, formData, {
+    const response = await axios.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Accept: "application/json",

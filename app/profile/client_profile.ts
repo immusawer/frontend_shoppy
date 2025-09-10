@@ -13,6 +13,7 @@ export interface UserProfile {
 }
 
 export function getProfileImageUrl(imagePath: string | null): string {
+  const imageUrl = `${API_BASE_URL}/uploads/profiles/${imagePath}`;
   if (!imagePath) return "/avatars/01.png";
 
   // If the path already includes the full URL, return it as is
@@ -26,10 +27,11 @@ export function getProfileImageUrl(imagePath: string | null): string {
   }
 
   // Otherwise, construct the full path
-  return `${API_BASE_URL}/uploads/profiles/${imagePath}`;
+  return imageUrl;
 }
 
 export async function fetchUserProfile(): Promise<UserProfile> {
+  const profileImage = `${API_BASE_URL}/users/profile`;
   try {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -40,7 +42,7 @@ export async function fetchUserProfile(): Promise<UserProfile> {
     console.log("API URL:", `${API_BASE_URL}/users/profile`);
     console.log("Token (first 10 chars):", token.substring(0, 10) + "...");
 
-    const response = await axios.get(`${API_BASE_URL}/users/profile`, {
+    const response = await axios.get(profileImage, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -48,33 +50,12 @@ export async function fetchUserProfile(): Promise<UserProfile> {
       withCredentials: true,
     });
 
-    console.log("=== User Profile Data ===");
-    console.log("Full Response:", response.data);
-    console.log("User ID:", response.data.id);
-    console.log("Username:", response.data.username);
-    console.log("Email:", response.data.email);
-    console.log("Name:", response.data.name);
-    console.log("Profile Image Path:", response.data.profileImage);
-    console.log(
-      "Full Image URL:",
-      getProfileImageUrl(response.data.profileImage)
-    );
-    console.log("Created At:", response.data.createdAt);
-    console.log("Updated At:", response.data.updatedAt);
-    console.log("========================");
-
     if (!response.data) {
       throw new Error("No data received from server");
     }
 
     return response.data;
   } catch (error: any) {
-    console.error("=== Profile Service Error ===");
-    console.error("Error Details:", error);
-    console.error("Response Status:", error.response?.status);
-    console.error("Response Data:", error.response?.data);
-    console.error("========================");
-
     if (error.response?.status === 401) {
       throw new Error("Authentication failed. Please login again.");
     }
@@ -90,19 +71,15 @@ export async function fetchUserProfile(): Promise<UserProfile> {
 export async function updateUserProfile(
   data: Partial<UserProfile>
 ): Promise<UserProfile> {
+  const profileImage = `${API_BASE_URL}/users/profile`;
+
   try {
     const token = localStorage.getItem("access_token");
     if (!token) {
       throw new Error("No authentication token found");
     }
 
-    console.log(
-      "Making API request to update profile:",
-      `${API_BASE_URL}/users/profile`
-    );
-    console.log("Update data:", data);
-
-    const response = await axios.put(`${API_BASE_URL}/users/profile`, data, {
+    const response = await axios.put(profileImage, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

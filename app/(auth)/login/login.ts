@@ -13,6 +13,8 @@ export const loginUser = async (credentials: {
   email: string;
   password: string;
 }): Promise<LoginResponse> => {
+  const url = `${API_URL}/auth/login`; // ✅ full endpoint
+
   try {
     // 🔠 Force email to lowercase
     const normalizedCredentials = {
@@ -20,10 +22,7 @@ export const loginUser = async (credentials: {
       password: credentials.password,
     };
 
-    const response = await axios.post(
-      `${API_URL}/auth/login`,
-      normalizedCredentials
-    );
+    const response = await axios.post(url, normalizedCredentials);
     console.log("Server response:", response.data);
 
     if (response.data.access_token) {
